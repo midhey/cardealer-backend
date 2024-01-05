@@ -6,18 +6,20 @@ import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import ru.ladamarket.models.user.UserService
+import ru.ladamarket.database.services.user.UserService
 import ru.ladamarket.modelRequest.user.UserInfoResponse
 
-fun Route.profile() {
+fun Route.getUser(
+    userService: UserService
+) {
     authenticate("jwt-auth") {
-        get("/profile"){
+        get("/getuser") {
             val principal = call.principal<JWTPrincipal>()
             if (principal != null) {
                 val userId = principal!!.payload.getClaim("id").asInt()
 
                 if (userId != null) {
-                    val user = UserService.fetchUserById(userId)
+                    val user = userService.read(userId)
                     call.respond(
                         HttpStatusCode.OK, UserInfoResponse(
                             surname = user!!.surname,

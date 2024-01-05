@@ -4,6 +4,7 @@ val logback_version: String by project
 
 val exposed_version: String by project
 val h2_version: String by project
+val koin_version: String by project
 val postgres_version: String by project
 
 plugins {
@@ -68,4 +69,13 @@ dependencies {
     //tests
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+
+    // arrow core
+    implementation("io.arrow-kt:arrow-core:1.2.0")
+    implementation("io.arrow-kt:arrow-fx-coroutines:1.2.0")
+
+    // Dependency injection
+    implementation("io.insert-koin:koin-ktor:$koin_version")
+    implementation("io.insert-koin:koin-logger-slf4j:$koin_version")
+    implementation("io.insert-koin:koin-core:$koin_version")
 }

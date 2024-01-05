@@ -1,10 +1,7 @@
 package ru.ladamarket
 
 import io.ktor.server.application.*
-import ru.ladamarket.database.connectDataBase
 import ru.ladamarket.plugins.*
-import ru.ladamarket.security.hash.SHA256HashingService
-import ru.ladamarket.security.token.JwtTokenService
 import ru.ladamarket.security.token.TokenConfig
 
 fun main(args: Array<String>) {
@@ -18,16 +15,11 @@ fun Application.module() {
         expiresIn = 3L * 1000L * 60L * 60L * 24L,
         secret = environment.config.property("jwt.secret").getString()
     )
-    val hashingService = SHA256HashingService()
-    val tokenService = JwtTokenService()
+    configureKoin()
     configureSecurity(config)
-    configureRouting(
-        hashingService,
-        tokenService,
-        config
-    )
+    configureRouting(config)
     configureMonitoring()
     configureSerialization()
-    connectDataBase()
+//    connectDataBase()
 
 }

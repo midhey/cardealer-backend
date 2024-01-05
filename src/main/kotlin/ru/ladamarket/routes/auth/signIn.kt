@@ -1,30 +1,30 @@
-package ru.ladamarket.routes.auth
-
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import ru.ladamarket.models.user.UserService
+import ru.ladamarket.database.services.user.UserService
 import ru.ladamarket.modelRequest.auth.signIn.AuthRequest
 import ru.ladamarket.modelRequest.auth.signIn.AuthResponse
-import ru.ladamarket.security.hash.SHA256HashingService
+import ru.ladamarket.security.hash.HashingService
 import ru.ladamarket.security.hash.SaltedHash
 import ru.ladamarket.security.token.TokenClaim
 import ru.ladamarket.security.token.TokenConfig
 import ru.ladamarket.security.token.TokenService
+
 fun Route.signIn(
-    hashingService: SHA256HashingService,
+    userService: UserService,
     tokenService: TokenService,
-    config: TokenConfig,
+    hashingService: HashingService,
+    tokenConfig: TokenConfig
 ) {
     post("/signin") {
         val request = call.receive<AuthRequest>()
 
-        val user = if (request.phone.equals(null)) UserService.fetchUserByEmail(request.email) else UserService.fetchUserByPhone(request.phone)
+        val user = if (request.phone.equals(null)) userService.readByEmail(request.email) else userService.readByPhone(request.phone)
 
         if (user == null) {
-            call.respond(HttpStatusCode.Conflict, "Incorrect email")
+            call.respond(HttpStatusCode.Conflict, "Incorrect email or phone")
             return@post
         }
 
@@ -41,17 +41,18 @@ fun Route.signIn(
             return@post
         }
 
-        val userId = UserService.getUserIdByEmail(user.email)
+        val userId = userService.readIdByEmail(user.email)
 
         val token = tokenService.generateToken(
-            config = config,
+            config = tokenConfig,
             TokenClaim(
                 name = "id",
                 value = userId
             )
         )
 
-        call.respond(HttpStatusCode.OK,
+        call.respond(
+            HttpStatusCode.OK,
             AuthResponse(
                 token = token,
                 message = "success"
