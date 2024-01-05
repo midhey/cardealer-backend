@@ -1,4 +1,4 @@
-package ru.ladamarket.database.user
+package ru.ladamarket.models.user
 
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.dao.id.IntIdTable
@@ -8,20 +8,20 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.neq
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 
-object User : IntIdTable("user") {
-    private val surname = User.varchar("surname", 40)
-    private val name = User.varchar("name", 40)
-    private val patronymic = User.varchar("patronymic", 40)
-    private val phone = User.char("phone", 10)
-    private val email = User.varchar("email", 60)
-    private val hash = User.varchar("hash", 100)
-    private val salt = User.varchar("salt", 100)
-    private val avatar = User.varchar("avatar", 500)
-    private val role = User.varchar("role", 15)
+object UserService : IntIdTable("user") {
+    private val surname = UserService.varchar("surname", 40)
+    private val name = UserService.varchar("name", 40)
+    private val patronymic = UserService.varchar("patronymic", 40)
+    private val phone = UserService.char("phone", 10)
+    private val email = UserService.varchar("email", 60)
+    private val hash = UserService.varchar("hash", 100)
+    private val salt = UserService.varchar("salt", 100)
+    private val avatar = UserService.varchar("avatar", 500)
+    private val role = UserService.varchar("role", 15)
 
     fun insert(userDTO: UserDTO) {
         transaction {
-            val userId = User.insertAndGetId {
+            val userId = UserService.insertAndGetId {
                 it[surname] = userDTO.surname
                 it[name] = userDTO.name
                 it[patronymic] = userDTO.patronymic
@@ -37,7 +37,7 @@ object User : IntIdTable("user") {
 
     fun removeUser(id: Int) {
         transaction {
-            User.deleteWhere { User.id.eq(id) }
+            UserService.deleteWhere { UserService.id.eq(id) }
         }
     }
 
@@ -54,14 +54,14 @@ object User : IntIdTable("user") {
     )
     suspend fun deleteAllUsers(){
         newSuspendedTransaction(Dispatchers.IO) {
-            User.deleteWhere { email neq "admin@nintel.ru" }
+            UserService.deleteWhere { email neq "admin@nintel.ru" }
         }
     }
 
     fun fetchUserById(id: Int): UserDTO? {
         return try {
             transaction {
-                User.select { User.id.eq(id) }.singleOrNull()?.let { user ->
+                UserService.select { UserService.id.eq(id) }.singleOrNull()?.let { user ->
                     resultRowToUserDto(user)
                 } ?: kotlin.run { null }
             }
@@ -73,7 +73,7 @@ object User : IntIdTable("user") {
     fun fetchUserByPhone(phone: String): UserDTO? {
         return try {
             transaction {
-                User.select { User.phone.eq(phone) }.singleOrNull()?.let { user ->
+                UserService.select { UserService.phone.eq(phone) }.singleOrNull()?.let { user ->
                     resultRowToUserDto(user)
                 } ?: kotlin.run { null }
             }
@@ -86,7 +86,7 @@ object User : IntIdTable("user") {
     fun fetchUserByEmail(email: String): UserDTO? {
         return try {
             transaction {
-                User.select { User.email.eq(email) }.singleOrNull()?.let { user ->
+                UserService.select { UserService.email.eq(email) }.singleOrNull()?.let { user ->
                     resultRowToUserDto(user)
                 } ?: kotlin.run { null }
             }
@@ -99,7 +99,7 @@ object User : IntIdTable("user") {
     fun getUserIdByEmail(email: String): Int? {
         return try {
             transaction {
-                User.select { User.email.eq(email) }.singleOrNull()?.get(User.id)?.value
+                UserService.select { UserService.email.eq(email) }.singleOrNull()?.get(UserService.id)?.value
             }
         } catch (e: Exception) {
             e.printStackTrace()

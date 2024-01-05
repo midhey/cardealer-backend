@@ -1,9 +1,7 @@
 package ru.ladamarket
 
 import io.ktor.server.application.*
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.transactions.transaction
-import ru.ladamarket.database.connectDataBaseRouting
+import ru.ladamarket.database.connectDataBase
 import ru.ladamarket.plugins.*
 import ru.ladamarket.security.hash.SHA256HashingService
 import ru.ladamarket.security.token.JwtTokenService
@@ -30,7 +28,6 @@ fun Application.module() {
     )
     configureMonitoring()
     configureSerialization()
-    configureDatabases()
-    connectDataBaseRouting()
+    connectDataBase()
 
 }

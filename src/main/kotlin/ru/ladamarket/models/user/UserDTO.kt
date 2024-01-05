@@ -1,4 +1,4 @@
-package ru.ladamarket.database.user
+package ru.ladamarket.models.user
 
 import kotlinx.serialization.Serializable
 

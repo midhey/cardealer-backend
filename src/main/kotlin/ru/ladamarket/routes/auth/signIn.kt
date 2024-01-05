@@ -5,7 +5,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import ru.ladamarket.database.user.User
+import ru.ladamarket.models.user.UserService
 import ru.ladamarket.modelRequest.auth.signIn.AuthRequest
 import ru.ladamarket.modelRequest.auth.signIn.AuthResponse
 import ru.ladamarket.security.hash.SHA256HashingService
@@ -21,7 +21,7 @@ fun Route.signIn(
     post("/signin") {
         val request = call.receive<AuthRequest>()
 
-        val user = if (request.phone.equals(null)) User.fetchUserByEmail(request.email) else User.fetchUserByPhone(request.phone)
+        val user = if (request.phone.equals(null)) UserService.fetchUserByEmail(request.email) else UserService.fetchUserByPhone(request.phone)
 
         if (user == null) {
             call.respond(HttpStatusCode.Conflict, "Incorrect email")
@@ -41,7 +41,7 @@ fun Route.signIn(
             return@post
         }
 
-        val userId = User.getUserIdByEmail(user.email)
+        val userId = UserService.getUserIdByEmail(user.email)
 
         val token = tokenService.generateToken(
             config = config,

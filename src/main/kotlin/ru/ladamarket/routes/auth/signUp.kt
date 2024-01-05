@@ -5,8 +5,8 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import ru.ladamarket.database.user.User
-import ru.ladamarket.database.user.UserDTO
+import ru.ladamarket.models.user.UserService
+import ru.ladamarket.models.user.UserDTO
 import ru.ladamarket.modelRequest.auth.signUp.RegisterRequest
 import ru.ladamarket.modelRequest.auth.signUp.RegisterResponse
 import ru.ladamarket.security.hash.SHA256HashingService
@@ -45,7 +45,7 @@ fun Route.signUp(
             avatar = request.avatar,
             role = request.role
         ).let { user ->
-            User.fetchUserByEmail(request.email)?.let { _ ->
+            UserService.fetchUserByEmail(request.email)?.let { _ ->
                 call.respond(
                     RegisterResponse(
                         successful = false,
@@ -54,7 +54,7 @@ fun Route.signUp(
                 )
 
             } ?: kotlin.run {
-                User.fetchUserByPhone(request.phone)?.let { _ ->
+                UserService.fetchUserByPhone(request.phone)?.let { _ ->
                     call.respond(
                         RegisterResponse(
                             successful = false,
@@ -62,7 +62,7 @@ fun Route.signUp(
                         )
                     )
                 } ?: kotlin.run {
-                    User.insert(user)
+                    UserService.insert(user)
                 }
             }
         }
