@@ -4,8 +4,11 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class UserInfoUpdate(
-    val email: String,
-    val phone: String,
-    val hash: String,
-    val avatar: String
+    val surname: String?,
+    val name: String?,
+    val patronymic: String?,
+    val email: String?,
+    val phone: String?,
+    val hash: String?,
+    val avatar: String?
 )

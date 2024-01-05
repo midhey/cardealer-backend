@@ -26,7 +26,8 @@ fun Application.configureRouting(config: TokenConfig) {
             tokenConfig = config
         )
         profile(
-            userService = userService
+            userService = userService,
+            hashingService = hashingService
         )
 
     }

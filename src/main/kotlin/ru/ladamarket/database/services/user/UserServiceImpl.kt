@@ -112,18 +112,18 @@ class UserServiceImpl(database: Database):UserService {
 
     override suspend fun update(id: Int, request: UserInfoUpdate, saltedHash: SaltedHash) {
         dbQuery {
-            if ((request.email == null || isEmailExist(request.email))
-                &&
-                (request.phone == null || isPhoneExist(request.phone))
-            ) {
+            if (UserTable.select(where = {UserTable.id eq id})!=null) {
                 UserTable.update(where = {UserTable.id eq id}) {
-                    if (request.email != null) it[email] = request.email
-                    if (request.phone != null) it[phone] = request.phone
-                    if (request.hash != null) {
+                    if (!request.surname.isNullOrBlank()) it[surname] = request.surname
+                    if (!request.name.isNullOrBlank()) it[name] = request.name
+                    if (!request.patronymic.isNullOrBlank()) it[patronymic] = request.patronymic
+                    if (!request.email.isNullOrBlank()) it[email] = request.email
+                    if (!request.phone.isNullOrBlank()) it[phone] = request.phone
+                    if (!request.hash.isNullOrBlank()) {
                         it[hash] = saltedHash.hash
                         it[salt] = saltedHash.salt
                     }
-                    if (request.avatar != null) it[avatar] = request.avatar
+                    if (!request.avatar.isNullOrBlank()) it[avatar] = request.avatar
                 }
             }
         }

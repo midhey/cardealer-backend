@@ -25,7 +25,7 @@ fun Route.getUser(
                             surname = user!!.surname,
                             name = user.name,
                             patronymic = user.patronymic,
-                            phone = user.patronymic,
+                            phone = user.phone,
                             email = user.email,
                             avatar = user.avatar
                     )
