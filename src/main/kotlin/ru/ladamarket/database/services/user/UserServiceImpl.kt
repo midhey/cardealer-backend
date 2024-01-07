@@ -1,5 +1,6 @@
 package ru.ladamarket.database.services.user
 
+import io.ktor.util.*
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
@@ -77,6 +78,12 @@ class UserServiceImpl(database: Database):UserService {
         }
     }
 
+    override suspend fun readAll(): List<User> {
+        return dbQuery {
+            UserTable.selectAll().map { resultRowToUser(it) }
+        }
+    }
+
     override suspend fun readByEmail(email: String): User? {
         return dbQuery {
             UserTable.select { UserTable.email eq email }.singleOrNull()?.let { resultRowToUser(it) }
@@ -107,6 +114,20 @@ class UserServiceImpl(database: Database):UserService {
     override suspend fun isPhoneExist(phone: String):Boolean {
         return dbQuery {
             UserTable.select { UserTable.phone eq phone }.count() > 0
+        }
+    }
+
+    override suspend fun isAdmin(id: Int): Boolean {
+        return dbQuery {
+            val user = UserTable.select { UserTable.id eq id}.singleOrNull()?.let { resultRowToUser(it) }
+            user?.role!!.toLowerCasePreservingASCIIRules() == "admin"
+        }
+    }
+
+    override suspend fun isManager(id: Int): Boolean {
+        return dbQuery {
+            val user = UserTable.select { UserTable.id eq id}.singleOrNull()?.let { resultRowToUser(it) }
+            user?.role!!.toLowerCasePreservingASCIIRules() == "manager"
         }
     }
 

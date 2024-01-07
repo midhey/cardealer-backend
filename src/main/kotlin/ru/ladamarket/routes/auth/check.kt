@@ -10,6 +10,7 @@ fun Route.checkToken() {
     authenticate("jwt-auth") {
         get("/check") {
             call.respond(HttpStatusCode.OK)
+            return@get
         }
     }
 }

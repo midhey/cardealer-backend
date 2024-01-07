@@ -58,5 +58,6 @@ fun Route.signIn(
                 message = "success"
             )
         )
+        return@post
     }
 }

@@ -39,6 +39,7 @@ fun Route.updateUser(
 
                     userService.update(userId, request, saltedHash)
                     call.respond(HttpStatusCode.OK, "User updated")
+                    return@post
                 }
             }
         }

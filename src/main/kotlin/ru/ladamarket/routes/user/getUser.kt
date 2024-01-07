@@ -30,10 +30,12 @@ fun Route.getUser(
                             avatar = user.avatar
                     )
                     )
+                    return@get
                 }
             } else {
                 //Обработка ситуации, когда principal равен null
                 call.respond(HttpStatusCode.Unauthorized, "Unauthorized")
+                return@get
             }
         }
     }
