@@ -3,6 +3,8 @@ package ru.ladamarket.di
 import com.typesafe.config.ConfigFactory
 import io.ktor.server.config.*
 import org.jetbrains.exposed.sql.Database
+import org.koin.core.module.dsl.bind
+import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 import ru.ladamarket.database.DataBaseConfig
 import ru.ladamarket.database.services.carModel.CarModelService
@@ -48,6 +50,6 @@ val databaseModule = module {
 }
 
 val securityModule = module {
-    single<HashingService> { SHA256HashingService() }
-    single<TokenService> { JwtTokenService() }
+    factoryOf(::SHA256HashingService) { bind<HashingService>() }
+    factoryOf(::JwtTokenService) { bind<TokenService>() }
 }
