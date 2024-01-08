@@ -1,6 +1,6 @@
 package ru.ladamarket.database.services.engine
 
-import ru.ladamarket.models.engine.Engine
+import ru.ladamarket.models.carModels.Engine
 
 interface EngineService {
     suspend fun read(id: Short): Engine?

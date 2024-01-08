@@ -5,10 +5,14 @@ import io.ktor.server.config.*
 import org.jetbrains.exposed.sql.Database
 import org.koin.dsl.module
 import ru.ladamarket.database.DataBaseConfig
+import ru.ladamarket.database.services.carModel.CarModelService
+import ru.ladamarket.database.services.carModel.CarModelServiceImpl
 import ru.ladamarket.database.services.color.ColorService
 import ru.ladamarket.database.services.color.ColorServiceImpl
 import ru.ladamarket.database.services.engine.EngineService
 import ru.ladamarket.database.services.engine.EngineServiceImpl
+import ru.ladamarket.database.services.transmission.TransmissionService
+import ru.ladamarket.database.services.transmission.TransmissionServiceImpl
 import ru.ladamarket.database.services.user.UserService
 import ru.ladamarket.database.services.user.UserServiceImpl
 import ru.ladamarket.security.hash.HashingService
@@ -39,7 +43,8 @@ val databaseModule = module {
     single<UserService> { UserServiceImpl(get()) }
     single<ColorService> { ColorServiceImpl(get()) }
     single<EngineService> { EngineServiceImpl(get()) }
-
+    single<TransmissionService> { TransmissionServiceImpl(get()) }
+    single<CarModelService> { CarModelServiceImpl(get())}
 }
 
 val securityModule = module {

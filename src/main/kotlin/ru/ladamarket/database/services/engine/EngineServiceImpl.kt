@@ -13,7 +13,7 @@ import ru.ladamarket.database.services.engine.EngineServiceImpl.EngineTable.powe
 import ru.ladamarket.database.services.engine.EngineServiceImpl.EngineTable.torque
 import ru.ladamarket.database.services.engine.EngineServiceImpl.EngineTable.type
 import ru.ladamarket.database.services.engine.EngineServiceImpl.EngineTable.valveCount
-import ru.ladamarket.models.engine.Engine
+import ru.ladamarket.models.carModels.Engine
 
 class EngineServiceImpl(database: Database): EngineService {
 

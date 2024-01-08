@@ -1,4 +1,4 @@
-package ru.ladamarket.models.engine
+package ru.ladamarket.models.carModels
 
 data class Engine(
     val engineId: Short,
