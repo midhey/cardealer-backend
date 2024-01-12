@@ -11,12 +11,12 @@ import ru.ladamarket.database.services.carModel.CarModelService
 import ru.ladamarket.database.services.carModel.CarModelServiceImpl
 import ru.ladamarket.database.services.color.ColorService
 import ru.ladamarket.database.services.color.ColorServiceImpl
-import ru.ladamarket.database.services.engine.EngineService
-import ru.ladamarket.database.services.engine.EngineServiceImpl
+import ru.ladamarket.database.services.carServices.engine.EngineService
+import ru.ladamarket.database.services.carServices.engine.EngineServiceImpl
 import ru.ladamarket.database.services.order.orderService
 import ru.ladamarket.database.services.order.orderServiceImpl
-import ru.ladamarket.database.services.transmission.TransmissionService
-import ru.ladamarket.database.services.transmission.TransmissionServiceImpl
+import ru.ladamarket.database.services.carServices.transmission.TransmissionService
+import ru.ladamarket.database.services.carServices.transmission.TransmissionServiceImpl
 import ru.ladamarket.database.services.user.UserService
 import ru.ladamarket.database.services.user.UserServiceImpl
 import ru.ladamarket.security.hash.HashingService

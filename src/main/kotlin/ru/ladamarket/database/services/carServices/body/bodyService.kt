@@ -1,4 +1,4 @@
-package ru.ladamarket.database.services.body
+package ru.ladamarket.database.services.carServices.body
 
 import ru.ladamarket.models.carModels.Body
 

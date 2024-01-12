@@ -6,7 +6,7 @@ import io.ktor.server.plugins.autohead.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
 import ru.ladamarket.database.services.color.ColorService
-import ru.ladamarket.database.services.engine.EngineService
+import ru.ladamarket.database.services.carServices.engine.EngineService
 import ru.ladamarket.database.services.user.UserService
 import ru.ladamarket.routes.admin.admin
 import ru.ladamarket.routes.auth.auth

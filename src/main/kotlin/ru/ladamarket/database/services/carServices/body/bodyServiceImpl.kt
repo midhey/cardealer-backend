@@ -1,21 +1,21 @@
-package ru.ladamarket.database.services.body
+package ru.ladamarket.database.services.carServices.body
 
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
-import ru.ladamarket.database.services.body.bodyServiceImpl.BodyTable.bodyName
-import ru.ladamarket.database.services.body.bodyServiceImpl.BodyTable.clearance
-import ru.ladamarket.database.services.body.bodyServiceImpl.BodyTable.height
-import ru.ladamarket.database.services.body.bodyServiceImpl.BodyTable.length
-import ru.ladamarket.database.services.body.bodyServiceImpl.BodyTable.maxWeight
-import ru.ladamarket.database.services.body.bodyServiceImpl.BodyTable.seatsCount
-import ru.ladamarket.database.services.body.bodyServiceImpl.BodyTable.tankVolume
-import ru.ladamarket.database.services.body.bodyServiceImpl.BodyTable.trunkVolume
-import ru.ladamarket.database.services.body.bodyServiceImpl.BodyTable.weight
-import ru.ladamarket.database.services.body.bodyServiceImpl.BodyTable.wheelbase
-import ru.ladamarket.database.services.body.bodyServiceImpl.BodyTable.width
+import ru.ladamarket.database.services.carServices.body.bodyServiceImpl.BodyTable.bodyName
+import ru.ladamarket.database.services.carServices.body.bodyServiceImpl.BodyTable.clearance
+import ru.ladamarket.database.services.carServices.body.bodyServiceImpl.BodyTable.height
+import ru.ladamarket.database.services.carServices.body.bodyServiceImpl.BodyTable.length
+import ru.ladamarket.database.services.carServices.body.bodyServiceImpl.BodyTable.maxWeight
+import ru.ladamarket.database.services.carServices.body.bodyServiceImpl.BodyTable.seatsCount
+import ru.ladamarket.database.services.carServices.body.bodyServiceImpl.BodyTable.tankVolume
+import ru.ladamarket.database.services.carServices.body.bodyServiceImpl.BodyTable.trunkVolume
+import ru.ladamarket.database.services.carServices.body.bodyServiceImpl.BodyTable.weight
+import ru.ladamarket.database.services.carServices.body.bodyServiceImpl.BodyTable.wheelbase
+import ru.ladamarket.database.services.carServices.body.bodyServiceImpl.BodyTable.width
 import ru.ladamarket.models.carModels.Body
 
 class bodyServiceImpl(database: Database): bodyService {
@@ -45,7 +45,7 @@ class bodyServiceImpl(database: Database): bodyService {
     }
     override suspend fun read(id: Int): Body? {
         return dbQuery {
-            BodyTable.select(where = {BodyTable.id eq id}).singleOrNull()?.let { ResultRowToBody(it) }
+            BodyTable.select(where = { BodyTable.id eq id}).singleOrNull()?.let { ResultRowToBody(it) }
         }
     }
 
@@ -57,7 +57,7 @@ class bodyServiceImpl(database: Database): bodyService {
 
     override suspend fun isBodyExist(id: Int): Boolean {
         return dbQuery {
-            BodyTable.select(where = {BodyTable.id eq id}).count()>0
+            BodyTable.select(where = { BodyTable.id eq id}).count()>0
         }
     }
 

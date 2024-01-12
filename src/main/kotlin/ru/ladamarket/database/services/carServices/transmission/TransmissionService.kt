@@ -1,4 +1,4 @@
-package ru.ladamarket.database.services.transmission
+package ru.ladamarket.database.services.carServices.transmission
 
 import ru.ladamarket.models.carModels.Transmission
 

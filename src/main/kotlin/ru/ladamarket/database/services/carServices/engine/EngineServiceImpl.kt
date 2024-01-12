@@ -1,18 +1,18 @@
-package ru.ladamarket.database.services.engine
+package ru.ladamarket.database.services.carServices.engine
 
 import kotlinx.coroutines.Dispatchers
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
-import ru.ladamarket.database.services.engine.EngineServiceImpl.EngineTable.cylindersCount
-import ru.ladamarket.database.services.engine.EngineServiceImpl.EngineTable.displacement
-import ru.ladamarket.database.services.engine.EngineServiceImpl.EngineTable.ecoClass
-import ru.ladamarket.database.services.engine.EngineServiceImpl.EngineTable.engineId
-import ru.ladamarket.database.services.engine.EngineServiceImpl.EngineTable.fuelType
-import ru.ladamarket.database.services.engine.EngineServiceImpl.EngineTable.power
-import ru.ladamarket.database.services.engine.EngineServiceImpl.EngineTable.torque
-import ru.ladamarket.database.services.engine.EngineServiceImpl.EngineTable.type
-import ru.ladamarket.database.services.engine.EngineServiceImpl.EngineTable.valveCount
+import ru.ladamarket.database.services.carServices.engine.EngineServiceImpl.EngineTable.cylindersCount
+import ru.ladamarket.database.services.carServices.engine.EngineServiceImpl.EngineTable.displacement
+import ru.ladamarket.database.services.carServices.engine.EngineServiceImpl.EngineTable.ecoClass
+import ru.ladamarket.database.services.carServices.engine.EngineServiceImpl.EngineTable.engineId
+import ru.ladamarket.database.services.carServices.engine.EngineServiceImpl.EngineTable.fuelType
+import ru.ladamarket.database.services.carServices.engine.EngineServiceImpl.EngineTable.power
+import ru.ladamarket.database.services.carServices.engine.EngineServiceImpl.EngineTable.torque
+import ru.ladamarket.database.services.carServices.engine.EngineServiceImpl.EngineTable.type
+import ru.ladamarket.database.services.carServices.engine.EngineServiceImpl.EngineTable.valveCount
 import ru.ladamarket.models.carModels.Engine
 
 class EngineServiceImpl(database: Database): EngineService {
@@ -35,7 +35,7 @@ class EngineServiceImpl(database: Database): EngineService {
         transaction(database) {
             SchemaUtils.create(EngineTable)
 
-            if (EngineTable.select {EngineTable.engineId eq 11182}.count().toInt() == 0) {
+            if (EngineTable.select { EngineTable.engineId eq 11182}.count().toInt() == 0) {
                 //1.6 8v
                 EngineTable.insert {
                     it[engineId] = 11182
@@ -192,7 +192,7 @@ class EngineServiceImpl(database: Database): EngineService {
     }
     override suspend fun read(id: Short): Engine? {
         return dbQuery {
-            EngineTable.select(where = {EngineTable.engineId eq id}).singleOrNull()?.let { ResultRowToEngine(it) }
+            EngineTable.select(where = { EngineTable.engineId eq id}).singleOrNull()?.let { ResultRowToEngine(it) }
         }
     }
 
@@ -204,7 +204,7 @@ class EngineServiceImpl(database: Database): EngineService {
 
     override suspend fun isEngineExist(id: Short): Boolean {
         return dbQuery {
-            EngineTable.select(where = {EngineTable.engineId eq id}).count()>0
+            EngineTable.select(where = { EngineTable.engineId eq id}).count()>0
         }
     }
 
