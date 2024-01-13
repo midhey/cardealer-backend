@@ -3,7 +3,7 @@ package ru.ladamarket.modelRequest.engine
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class engineResponse(
+data class EngineResponse(
     val engineId: Short,
     val type: String,
     val cylindersCount: Short,

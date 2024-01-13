@@ -183,6 +183,17 @@ class EngineServiceImpl(database: Database): EngineService {
                     it[torque] = 184
                     it[ecoClass] = "ЕВРО-5"
                 }
+                EngineTable.insert {
+                    it[engineId] = 2123
+                    it[type] = "Рядный"
+                    it[cylindersCount] = 4
+                    it[valveCount] = 8
+                    it[displacement] = 1690
+                    it[fuelType] = "АИ-92"
+                    it[power] = 80
+                    it[torque] = 127
+                    it[ecoClass] = "ЕВРО-2/3/4"
+                }
             }
         }
     }

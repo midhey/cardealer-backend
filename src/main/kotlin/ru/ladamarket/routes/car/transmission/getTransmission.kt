@@ -5,7 +5,7 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import ru.ladamarket.database.services.carServices.transmission.TransmissionService
-import ru.ladamarket.modelRequest.transmission.transmissionResponse
+import ru.ladamarket.modelRequest.transmission.TransmissionResponse
 
 fun Route.getTransmission(
     transmissionService: TransmissionService
@@ -17,7 +17,7 @@ fun Route.getTransmission(
             if (transmission!=null) {
                 call.respond(
                     HttpStatusCode.OK,
-                    transmissionResponse(
+                    TransmissionResponse(
                         transmissionId = id,
                         type = transmission.type,
                         drive = transmission.drive,

@@ -9,7 +9,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import ru.ladamarket.database.services.color.ColorService
 import ru.ladamarket.database.services.user.UserService
-import ru.ladamarket.modelRequest.color.colorRequest
+import ru.ladamarket.modelRequest.color.ColorRequest
 
 fun Route.addColor(
     colorService: ColorService,
@@ -20,7 +20,7 @@ fun Route.addColor(
             val principal = call.principal<JWTPrincipal>()
             if (principal != null) {
                 val userId = principal!!.payload.getClaim("id").asInt()
-                val request = call.receive<colorRequest>()
+                val request = call.receive<ColorRequest>()
 
 
                 if (userId != null) {

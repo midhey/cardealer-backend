@@ -3,7 +3,7 @@ package ru.ladamarket.modelRequest.carModel
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class carModelResponse(
+data class CarModelResponse(
     val carModelId: Int,
     val modelName: String,
     val generation: String,

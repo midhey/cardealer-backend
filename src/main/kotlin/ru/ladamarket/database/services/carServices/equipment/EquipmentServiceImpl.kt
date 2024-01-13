@@ -20,13 +20,264 @@ class EquipmentServiceImpl(database: Database): EquipmentService {
         val modelId = integer("model_id")
         val bodyId = integer("body_id")
         val transmissionId = integer("transmission_id")
-        val engineId = integer("engine_id")
+        val engineId = short("engine_id")
         val cost = double("cost")
     }
 
     init {
         transaction(database) {
             SchemaUtils.create(EquipmentTable)
+
+            if (EquipmentTable.select(where = {EquipmentTable.id eq 1}).count().toInt() == 0) {
+                //Granta sedan
+                EquipmentTable.insert {
+                    it[equipmentName] = "Standart"
+                    it[modelId] = 1
+                    it[bodyId] = 1
+                    it[transmissionId] = 1
+                    it[engineId] = 11182
+                    it[cost] = 699900.00
+                }
+                EquipmentTable.insert {
+                    it[equipmentName] = "Classic"
+                    it[modelId] = 1
+                    it[bodyId] = 1
+                    it[transmissionId] = 1
+                    it[engineId] = 11182
+                    it[cost] = 799900.00
+                }
+                EquipmentTable.insert {
+                    it[equipmentName] = "Comfort v8"
+                    it[modelId] = 1
+                    it[bodyId] = 1
+                    it[transmissionId] = 1
+                    it[engineId] = 11182
+                    it[cost] = 959900.00
+                }
+                EquipmentTable.insert {
+                    it[equipmentName] = "Comfort v16"
+                    it[modelId] = 1
+                    it[bodyId] = 1
+                    it[transmissionId] = 1
+                    it[engineId] = 21127
+                    it[cost] = 989900.00
+                }
+                //Granta Liftback
+                EquipmentTable.insert {
+                    it[equipmentName] = "Standart"
+                    it[modelId] = 1
+                    it[bodyId] = 2
+                    it[transmissionId] = 1
+                    it[engineId] = 11182
+                    it[cost] = 754900.00
+                }
+                EquipmentTable.insert {
+                    it[equipmentName] = "Classic"
+                    it[modelId] = 1
+                    it[bodyId] = 2
+                    it[transmissionId] = 1
+                    it[engineId] = 11182
+                    it[cost] = 880900.00
+                }
+                EquipmentTable.insert {
+                    it[equipmentName] = "Comfort v8"
+                    it[modelId] = 1
+                    it[bodyId] = 2
+                    it[transmissionId] = 1
+                    it[engineId] = 11182
+                    it[cost] = 989900.00
+                }
+                EquipmentTable.insert {
+                    it[equipmentName] = "Comfort v16"
+                    it[modelId] = 1
+                    it[bodyId] = 2
+                    it[transmissionId] = 1
+                    it[engineId] = 21127
+                    it[cost] = 1019900.00
+                }
+                //Granta Cross
+                EquipmentTable.insert {
+                    it[equipmentName] = "Comfort Light"
+                    it[modelId] = 1
+                    it[bodyId] = 3
+                    it[transmissionId] = 1
+                    it[engineId] = 11182
+                    it[cost] = 945900.00
+                }
+                EquipmentTable.insert {
+                    it[equipmentName] = "Comfort v8"
+                    it[modelId] = 1
+                    it[bodyId] = 3
+                    it[transmissionId] = 1
+                    it[engineId] = 21127
+                    it[cost] = 1043900.00
+                }
+                EquipmentTable.insert {
+                    it[equipmentName] = "Comfort v16"
+                    it[modelId] = 1
+                    it[bodyId] = 3
+                    it[transmissionId] = 1
+                    it[engineId] = 11182
+                    it[cost] = 1073900.00
+                }
+                //Vesta Sedan
+                EquipmentTable.insert {
+                    it[equipmentName] = "Comfort v8"
+                    it[modelId] = 2
+                    it[bodyId] = 4
+                    it[transmissionId] = 1
+                    it[engineId] = 11182
+                    it[cost] = 1239900.00
+                }
+                EquipmentTable.insert {
+                    it[equipmentName] = "Comfort v16"
+                    it[modelId] = 2
+                    it[bodyId] = 4
+                    it[transmissionId] = 1
+                    it[engineId] = 21129
+                    it[cost] = 1509900.00
+                }
+                EquipmentTable.insert {
+                    it[equipmentName] = "Life"
+                    it[modelId] = 2
+                    it[bodyId] = 4
+                    it[transmissionId] = 1
+                    it[engineId] = 21129
+                    it[cost] = 1591900.00
+                }
+                EquipmentTable.insert {
+                    it[equipmentName] = "Enjoy"
+                    it[modelId] = 2
+                    it[bodyId] = 4
+                    it[transmissionId] = 1
+                    it[engineId] = 21129
+                    it[cost] = 1656900.00
+                }
+                EquipmentTable.insert {
+                    it[equipmentName] = "Techno"
+                    it[modelId] = 2
+                    it[bodyId] = 4
+                    it[transmissionId] = 1
+                    it[engineId] = 21129
+                    it[cost] = 1798900.00
+                }
+                //Vesta Cross
+                EquipmentTable.insert {
+                    it[equipmentName] = "Life"
+                    it[modelId] = 2
+                    it[bodyId] = 5
+                    it[transmissionId] = 1
+                    it[engineId] = 21129
+                    it[cost] = 1733900.00
+                }
+                EquipmentTable.insert {
+                    it[equipmentName] = "Enjoy"
+                    it[modelId] = 2
+                    it[bodyId] = 5
+                    it[transmissionId] = 1
+                    it[engineId] = 21129
+                    it[cost] = 1801900.00
+                }
+                EquipmentTable.insert {
+                    it[equipmentName] = "Techno"
+                    it[modelId] = 2
+                    it[bodyId] = 5
+                    it[transmissionId] = 1
+                    it[engineId] = 21129
+                    it[cost] = 1913900.00
+                }
+                //Vesta SW
+                EquipmentTable.insert {
+                    it[equipmentName] = "Comfort v8"
+                    it[modelId] = 2
+                    it[bodyId] = 6
+                    it[transmissionId] = 1
+                    it[engineId] = 11182
+                    it[cost] = 1329900.00
+                }
+                EquipmentTable.insert {
+                    it[equipmentName] = "Comfort v16"
+                    it[modelId] = 2
+                    it[bodyId] = 6
+                    it[transmissionId] = 1
+                    it[engineId] = 21129
+                    it[cost] = 1639900.00
+                }
+                EquipmentTable.insert {
+                    it[equipmentName] = "Life"
+                    it[modelId] = 2
+                    it[bodyId] = 6
+                    it[transmissionId] = 1
+                    it[engineId] = 21129
+                    it[cost] = 1721900.00
+                }
+                EquipmentTable.insert {
+                    it[equipmentName] = "Enjoy"
+                    it[modelId] = 2
+                    it[bodyId] = 6
+                    it[transmissionId] = 1
+                    it[engineId] = 21129
+                    it[cost] = 1786900.00
+                }
+                EquipmentTable.insert {
+                    it[equipmentName] = "Techno"
+                    it[modelId] = 2
+                    it[bodyId] = 6
+                    it[transmissionId] = 1
+                    it[engineId] = 21129
+                    it[cost] = 1928900.00
+                }
+                //Vesta SW CROSS
+                EquipmentTable.insert {
+                    it[equipmentName] = "Comfort"
+                    it[modelId] = 2
+                    it[bodyId] = 7
+                    it[transmissionId] = 1
+                    it[engineId] = 11182
+                    it[cost] = 1511900.00
+                }
+                EquipmentTable.insert {
+                    it[equipmentName] = "Life"
+                    it[modelId] = 2
+                    it[bodyId] = 7
+                    it[transmissionId] = 1
+                    it[engineId] = 21129
+                    it[cost] = 1853900.00
+                }
+                EquipmentTable.insert {
+                    it[equipmentName] = "Enjoy"
+                    it[modelId] = 2
+                    it[bodyId] = 7
+                    it[transmissionId] = 1
+                    it[engineId] = 21129
+                    it[cost] = 1921900.00
+                }
+                EquipmentTable.insert {
+                    it[equipmentName] = "Techno"
+                    it[modelId] = 2
+                    it[bodyId] = 7
+                    it[transmissionId] = 1
+                    it[engineId] = 21129
+                    it[cost] = 2033900.00
+                }
+                //Niva Travel SUV
+                EquipmentTable.insert {
+                    it[equipmentName] = "Classic"
+                    it[modelId] = 3
+                    it[bodyId] = 8
+                    it[transmissionId] = 4
+                    it[engineId] = 21129
+                    it[cost] = 1217900.00
+                }
+                EquipmentTable.insert {
+                    it[equipmentName] = "Comfort"
+                    it[modelId] = 3
+                    it[bodyId] = 8
+                    it[transmissionId] = 4
+                    it[engineId] = 21129
+                    it[cost] = 1318900.00
+                }
+            }
         }
     }
 
@@ -43,6 +294,10 @@ class EquipmentServiceImpl(database: Database): EquipmentService {
         return dbQuery {
             EquipmentTable.selectAll().map { ResultRowToEquipment(it) }
         }
+    }
+
+    override suspend fun readAllBodiesByModel(id: Int): List<Equipment> {
+        TODO("Not yet implemented")
     }
 
     override suspend fun isEquipmentExists(id: Int): Boolean {

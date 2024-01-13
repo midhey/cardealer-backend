@@ -5,7 +5,7 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import ru.ladamarket.database.services.carServices.body.BodyService
-import ru.ladamarket.modelRequest.body.bodyResponse
+import ru.ladamarket.modelRequest.body.BodyResponse
 
 fun Route.getBody(
     bodyService: BodyService
@@ -17,7 +17,7 @@ fun Route.getBody(
             if (body!=null) {
                 call.respond(
                     HttpStatusCode.OK,
-                    bodyResponse(
+                    BodyResponse(
                         bodyId = id,
                         name = body.name,
                         length = body.length,

@@ -8,7 +8,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import ru.ladamarket.database.services.color.ColorService
 import ru.ladamarket.database.services.user.UserService
-import ru.ladamarket.modelRequest.color.colorResponse
+import ru.ladamarket.modelRequest.color.ColorResponse
 
 fun Route.getAllColors(
     colorService: ColorService,
@@ -26,7 +26,7 @@ fun Route.getAllColors(
                         call.respond(
                             HttpStatusCode.OK,
                             colors.map {
-                                colorResponse(
+                                ColorResponse(
                                     colorName = it.colorName,
                                     colorCode = it.colorCode,
                                     colorHex = it.colorHex

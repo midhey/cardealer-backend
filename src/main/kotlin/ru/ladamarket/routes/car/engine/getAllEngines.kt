@@ -5,7 +5,7 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import ru.ladamarket.database.services.carServices.engine.EngineService
-import ru.ladamarket.modelRequest.engine.engineResponse
+import ru.ladamarket.modelRequest.engine.EngineResponse
 
 fun Route.getAllEngines(
     engineService: EngineService
@@ -15,7 +15,7 @@ fun Route.getAllEngines(
         call.respond(
             HttpStatusCode.OK,
             engines.map {
-                engineResponse (
+                EngineResponse (
                     engineId = it.engineId,
                     type = it.type,
                     cylindersCount = it.cylindersCount,

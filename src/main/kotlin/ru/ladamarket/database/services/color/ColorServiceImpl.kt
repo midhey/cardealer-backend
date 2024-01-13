@@ -8,7 +8,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import ru.ladamarket.database.services.color.ColorServiceImpl.ColorTable.colorCode
 import ru.ladamarket.database.services.color.ColorServiceImpl.ColorTable.colorHex
 import ru.ladamarket.database.services.color.ColorServiceImpl.ColorTable.colorName
-import ru.ladamarket.modelRequest.color.colorRequest
+import ru.ladamarket.modelRequest.color.ColorRequest
 import ru.ladamarket.models.color.Color
 
 class ColorServiceImpl(database: Database): ColorService {
@@ -74,7 +74,7 @@ class ColorServiceImpl(database: Database): ColorService {
     private suspend fun <T> dbQuery(block: suspend () -> T) = newSuspendedTransaction(Dispatchers.IO) {
         block()
     }
-    override suspend fun colorAdd(request: colorRequest) {
+    override suspend fun colorAdd(request: ColorRequest) {
         dbQuery {
             ColorTable.insert {
                 it[colorName] = request.colorName
@@ -90,7 +90,7 @@ class ColorServiceImpl(database: Database): ColorService {
         }
     }
 
-    override suspend fun colorUpdate(request: colorRequest) {
+    override suspend fun colorUpdate(request: ColorRequest) {
         dbQuery {
             ColorTable.update(where = {ColorTable.colorCode eq request.colorCode}) {
                 it[colorName] = request.colorName

@@ -6,7 +6,7 @@ data class Equipment(
     val modelId: Int,
     val bodyId: Int,
     val transmissionId: Int,
-    val engineId: Int,
+    val engineId: Short,
     val cost: Double
 )
 

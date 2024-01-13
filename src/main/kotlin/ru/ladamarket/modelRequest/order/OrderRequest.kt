@@ -3,7 +3,7 @@ package ru.ladamarket.modelRequest.order
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class orderRequest(
+data class OrderRequest(
     val modelId: Short,
     val colorId: Short,
     val userId: Int,

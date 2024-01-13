@@ -8,6 +8,7 @@ import org.koin.ktor.ext.inject
 import ru.ladamarket.database.services.carServices.body.BodyService
 import ru.ladamarket.database.services.carServices.carModel.CarModelService
 import ru.ladamarket.database.services.carServices.engine.EngineService
+import ru.ladamarket.database.services.carServices.equipment.EquipmentService
 import ru.ladamarket.database.services.carServices.transmission.TransmissionService
 import ru.ladamarket.database.services.color.ColorService
 import ru.ladamarket.database.services.user.UserService
@@ -16,6 +17,7 @@ import ru.ladamarket.routes.auth.auth
 import ru.ladamarket.routes.car.body.body
 import ru.ladamarket.routes.car.carModel.carModel
 import ru.ladamarket.routes.car.engine.engine
+import ru.ladamarket.routes.car.equipment.equipment
 import ru.ladamarket.routes.car.transmission.transmission
 import ru.ladamarket.routes.color.color
 import ru.ladamarket.routes.user.profile
@@ -33,6 +35,7 @@ fun Application.configureRouting(config: TokenConfig) {
     val carModelService: CarModelService by inject()
     val transmissionService: TransmissionService by inject()
     val bodyService: BodyService by inject()
+    val equipmentService: EquipmentService by inject()
 
     routing {
         auth(userService, tokenService, hashingService, config)
@@ -43,6 +46,11 @@ fun Application.configureRouting(config: TokenConfig) {
         carModel(carModelService)
         transmission(transmissionService)
         body(bodyService)
+        equipment(carModelService,
+            bodyService,
+            transmissionService,
+            engineService,
+            equipmentService)
     }
 }
 
