@@ -18,7 +18,7 @@ import ru.ladamarket.models.carModels.Engine
 class EngineServiceImpl(database: Database): EngineService {
 
     object EngineTable:Table("engine") {
-        val engineId = short("engine_id")
+        val engineId = short("engine_id").uniqueIndex()
         val type = varchar("engine_type", 20)
         val cylindersCount = short("cylinders_count")
         val valveCount = short("valve_count")

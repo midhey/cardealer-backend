@@ -5,22 +5,26 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
+import ru.ladamarket.database.services.carServices.body.BodyServiceImpl
+import ru.ladamarket.database.services.carServices.carModel.CarModelServiceImpl
+import ru.ladamarket.database.services.carServices.engine.EngineServiceImpl
 import ru.ladamarket.database.services.carServices.equipment.EquipmentServiceImpl.EquipmentTable.bodyId
 import ru.ladamarket.database.services.carServices.equipment.EquipmentServiceImpl.EquipmentTable.cost
 import ru.ladamarket.database.services.carServices.equipment.EquipmentServiceImpl.EquipmentTable.engineId
 import ru.ladamarket.database.services.carServices.equipment.EquipmentServiceImpl.EquipmentTable.equipmentName
 import ru.ladamarket.database.services.carServices.equipment.EquipmentServiceImpl.EquipmentTable.modelId
 import ru.ladamarket.database.services.carServices.equipment.EquipmentServiceImpl.EquipmentTable.transmissionId
+import ru.ladamarket.database.services.carServices.transmission.TransmissionServiceImpl
 import ru.ladamarket.models.carModels.Equipment
 
 class EquipmentServiceImpl(database: Database): EquipmentService {
 
     object EquipmentTable:IntIdTable("equipment") {
         val equipmentName = varchar("name",30)
-        val modelId = integer("model_id")
-        val bodyId = integer("body_id")
-        val transmissionId = integer("transmission_id")
-        val engineId = short("engine_id")
+        val modelId = reference("model_id", CarModelServiceImpl.CarModelTable)
+        val bodyId = reference("body_id", BodyServiceImpl.BodyTable)
+        val transmissionId = reference("transmission_id", TransmissionServiceImpl.TransmissionTable)
+        val engineId = reference("engine_id", EngineServiceImpl.EngineTable.engineId)
         val cost = double("cost")
     }
 
@@ -28,7 +32,7 @@ class EquipmentServiceImpl(database: Database): EquipmentService {
         transaction(database) {
             SchemaUtils.create(EquipmentTable)
 
-            if (EquipmentTable.select(where = {EquipmentTable.id eq 1}).count().toInt() == 0) {
+            if (EquipmentTable.selectAll().count().toInt() == 0) {
                 //Granta sedan
                 EquipmentTable.insert {
                     it[equipmentName] = "Standart"
@@ -286,32 +290,45 @@ class EquipmentServiceImpl(database: Database): EquipmentService {
     }
     override suspend fun read(id: Int): Equipment? {
         return dbQuery {
-            EquipmentTable.select(where = {EquipmentTable.id eq id}).singleOrNull()?.let { ResultRowToEquipment(it) }
+            EquipmentTable
+                .select(where = {EquipmentTable.id eq id})
+                .singleOrNull()
+                ?.let { ResultRowToEquipment(it) }
         }
     }
 
     override suspend fun readAll(): List<Equipment> {
         return dbQuery {
-            EquipmentTable.selectAll().map { ResultRowToEquipment(it) }
+            EquipmentTable
+                .selectAll()
+                .map { ResultRowToEquipment(it) }
         }
     }
 
-    override suspend fun readAllBodiesByModel(id: Int): List<Equipment> {
-        TODO("Not yet implemented")
+    override suspend fun readAllBodiesByModel(id: Int): List<Int> {
+        return dbQuery {
+            EquipmentTable
+                .slice(EquipmentTable.bodyId)
+                .select { EquipmentTable.modelId eq id }
+                .groupBy(EquipmentTable.bodyId)
+                .map { it[EquipmentTable.bodyId].value }
+        }
     }
 
     override suspend fun isEquipmentExists(id: Int): Boolean {
         return dbQuery {
-            EquipmentTable.select(where = {EquipmentTable.id eq id}).count() > 0
+            EquipmentTable
+                .select(where = {EquipmentTable.id eq id})
+                .count() > 0
         }
     }
 
     private fun ResultRowToEquipment(row: ResultRow) = Equipment(
         equipmentId = row[EquipmentTable.id].value,
         name = row[equipmentName],
-        modelId = row[modelId],
-        bodyId = row[bodyId],
-        transmissionId = row[transmissionId],
+        modelId = row[modelId].value,
+        bodyId = row[bodyId].value,
+        transmissionId = row[transmissionId].value,
         engineId = row[engineId],
         cost = row[cost]
     )
