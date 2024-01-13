@@ -5,13 +5,19 @@ import io.ktor.server.application.*
 import io.ktor.server.plugins.autohead.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
-import ru.ladamarket.database.services.color.ColorService
+import ru.ladamarket.database.services.carServices.body.BodyService
+import ru.ladamarket.database.services.carServices.carModel.CarModelService
 import ru.ladamarket.database.services.carServices.engine.EngineService
+import ru.ladamarket.database.services.carServices.transmission.TransmissionService
+import ru.ladamarket.database.services.color.ColorService
 import ru.ladamarket.database.services.user.UserService
 import ru.ladamarket.routes.admin.admin
 import ru.ladamarket.routes.auth.auth
+import ru.ladamarket.routes.car.body.body
+import ru.ladamarket.routes.car.carModel.carModel
+import ru.ladamarket.routes.car.engine.engine
+import ru.ladamarket.routes.car.transmission.transmission
 import ru.ladamarket.routes.color.color
-import ru.ladamarket.routes.engine.engine
 import ru.ladamarket.routes.user.profile
 import ru.ladamarket.security.hash.HashingService
 import ru.ladamarket.security.token.TokenConfig
@@ -24,6 +30,9 @@ fun Application.configureRouting(config: TokenConfig) {
     val tokenService: TokenService by inject()
     val colorService: ColorService by inject()
     val engineService: EngineService by inject()
+    val carModelService: CarModelService by inject()
+    val transmissionService: TransmissionService by inject()
+    val bodyService: BodyService by inject()
 
     routing {
         auth(userService, tokenService, hashingService, config)
@@ -31,7 +40,9 @@ fun Application.configureRouting(config: TokenConfig) {
         admin(userService)
         color(colorService, userService)
         engine(engineService)
-
+        carModel(carModelService)
+        transmission(transmissionService)
+        body(bodyService)
     }
 }
 

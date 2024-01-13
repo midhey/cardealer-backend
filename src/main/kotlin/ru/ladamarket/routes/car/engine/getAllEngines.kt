@@ -1,4 +1,4 @@
-package ru.ladamarket.routes.engine
+package ru.ladamarket.routes.car.engine
 
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -28,5 +28,6 @@ fun Route.getAllEngines(
                 )
             }
         )
+        return@get
     }
 }

@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class carModelResponse(
+    val carModelId: Int,
     val modelName: String,
     val generation: String,
     val country: String,

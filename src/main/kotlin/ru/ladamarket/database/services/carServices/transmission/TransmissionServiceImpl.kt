@@ -62,7 +62,14 @@ class TransmissionServiceImpl(database: Database): TransmissionService {
         }
     }
 
+    override suspend fun isTransmissionExists(id: Int): Boolean {
+        return dbQuery {
+            TransmissionTable.select(where = {TransmissionTable.id eq id}).count() > 0
+        }
+    }
+
     private fun ResultRowToTransmission(row: ResultRow) = Transmission(
+        transmissionId = row[TransmissionTable.id],
         type = row[transmissionType],
         drive = row[transmissionDrive],
         transmissionCount = row[transmissionCount]

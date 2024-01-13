@@ -1,6 +1,10 @@
 package ru.ladamarket.modelRequest.body
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class bodyResponse(
+    val bodyId: Int,
     val name: String,
     val length: Short,
     val width: Short,

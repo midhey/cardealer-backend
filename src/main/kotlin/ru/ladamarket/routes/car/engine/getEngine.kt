@@ -27,12 +27,14 @@ fun Route.getEngine(
                         ecoClass = engine.ecoClass
                     )
                 )
+                return@get
             }
             else {
                 call.respond(
                     HttpStatusCode.NoContent,
                     message = "No engine with this id"
                 )
+                return@get
             }
         }
         else {
@@ -40,6 +42,7 @@ fun Route.getEngine(
                 HttpStatusCode.NoContent,
                 message = "No engine with this id"
             )
+            return@get
         }
     }
 }

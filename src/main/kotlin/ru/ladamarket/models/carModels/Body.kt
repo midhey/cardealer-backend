@@ -1,6 +1,9 @@
 package ru.ladamarket.models.carModels
 
+import org.jetbrains.exposed.dao.id.EntityID
+
 data class Body(
+    val bodyId: EntityID<Int>,
     val name: String,
     val length: Short,
     val width: Short,

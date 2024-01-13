@@ -7,16 +7,20 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 import ru.ladamarket.database.DataBaseConfig
-import ru.ladamarket.database.services.carModel.CarModelService
-import ru.ladamarket.database.services.carModel.CarModelServiceImpl
-import ru.ladamarket.database.services.color.ColorService
-import ru.ladamarket.database.services.color.ColorServiceImpl
+import ru.ladamarket.database.services.carServices.body.BodyService
+import ru.ladamarket.database.services.carServices.body.BodyServiceImpl
+import ru.ladamarket.database.services.carServices.carModel.CarModelService
+import ru.ladamarket.database.services.carServices.carModel.CarModelServiceImpl
 import ru.ladamarket.database.services.carServices.engine.EngineService
 import ru.ladamarket.database.services.carServices.engine.EngineServiceImpl
-import ru.ladamarket.database.services.order.orderService
-import ru.ladamarket.database.services.order.orderServiceImpl
+import ru.ladamarket.database.services.carServices.equipment.EquipmentService
+import ru.ladamarket.database.services.carServices.equipment.EquipmentServiceImpl
 import ru.ladamarket.database.services.carServices.transmission.TransmissionService
 import ru.ladamarket.database.services.carServices.transmission.TransmissionServiceImpl
+import ru.ladamarket.database.services.color.ColorService
+import ru.ladamarket.database.services.color.ColorServiceImpl
+import ru.ladamarket.database.services.order.OrderService
+import ru.ladamarket.database.services.order.OrderServiceImpl
 import ru.ladamarket.database.services.user.UserService
 import ru.ladamarket.database.services.user.UserServiceImpl
 import ru.ladamarket.security.hash.HashingService
@@ -48,8 +52,11 @@ val databaseModule = module {
     single<ColorService> { ColorServiceImpl(get()) }
     single<EngineService> { EngineServiceImpl(get()) }
     single<TransmissionService> { TransmissionServiceImpl(get()) }
-    single<CarModelService> { CarModelServiceImpl(get())}
-    single<orderService> { orderServiceImpl(get()) }
+    single<CarModelService> { CarModelServiceImpl(get()) }
+    single<BodyService> { BodyServiceImpl(get()) }
+    single<EquipmentService> {EquipmentServiceImpl(get())}
+    single<OrderService> { OrderServiceImpl(get()) }
+
 }
 
 val securityModule = module {
