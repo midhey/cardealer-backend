@@ -21,5 +21,5 @@ fun Application.module() {
     configureMonitoring()
     configureSerialization()
 //    connectDataBase()
-
+    configureCors()
 }

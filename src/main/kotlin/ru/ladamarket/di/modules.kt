@@ -11,6 +11,8 @@ import ru.ladamarket.database.services.carServices.body.BodyService
 import ru.ladamarket.database.services.carServices.body.BodyServiceImpl
 import ru.ladamarket.database.services.carServices.carModel.CarModelService
 import ru.ladamarket.database.services.carServices.carModel.CarModelServiceImpl
+import ru.ladamarket.database.services.carServices.colorToModel.ColorToModelService
+import ru.ladamarket.database.services.carServices.colorToModel.ColorToModelServiceImpl
 import ru.ladamarket.database.services.carServices.engine.EngineService
 import ru.ladamarket.database.services.carServices.engine.EngineServiceImpl
 import ru.ladamarket.database.services.carServices.equipment.EquipmentService
@@ -56,7 +58,7 @@ val databaseModule = module {
     single<BodyService> { BodyServiceImpl(get()) }
     single<EquipmentService> {EquipmentServiceImpl(get())}
     single<OrderService> { OrderServiceImpl(get()) }
-
+    single<ColorToModelService> { ColorToModelServiceImpl(get()) }
 }
 
 val securityModule = module {

@@ -35,6 +35,7 @@ dependencies {
     implementation("io.ktor:ktor-server-auth-jwt-jvm")
     implementation("io.ktor:ktor-server-auto-head-response-jvm")
     implementation("io.ktor:ktor-server-http-redirect-jvm")
+    implementation("io.ktor:ktor-http:$ktor_version")
 
     //api
     implementation("io.ktor:ktor-server-swagger-jvm")
@@ -53,6 +54,7 @@ dependencies {
     //exposed
     implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
+    implementation("org.jetbrains.exposed:exposed-java-time:$exposed_version")
 
     //h2 db
     implementation("com.h2database:h2:$h2_version")
@@ -65,6 +67,7 @@ dependencies {
 
     //apache.common.codec
     implementation("commons-codec:commons-codec:1.5")
+    implementation("io.ktor:ktor-server-cors-jvm:2.3.6")
 
     //tests
     testImplementation("io.ktor:ktor-server-tests-jvm")

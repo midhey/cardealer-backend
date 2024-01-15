@@ -7,6 +7,7 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import org.jetbrains.exposed.sql.transactions.transaction
 import ru.ladamarket.database.services.carServices.body.BodyServiceImpl
 import ru.ladamarket.database.services.carServices.carModel.CarModelServiceImpl
+import ru.ladamarket.database.services.carServices.colorToModel.ColorToModelServiceImpl.ColorToModelTable.uniqueIndex
 import ru.ladamarket.database.services.carServices.engine.EngineServiceImpl
 import ru.ladamarket.database.services.carServices.equipment.EquipmentServiceImpl.EquipmentTable.bodyId
 import ru.ladamarket.database.services.carServices.equipment.EquipmentServiceImpl.EquipmentTable.cost
@@ -17,10 +18,10 @@ import ru.ladamarket.database.services.carServices.equipment.EquipmentServiceImp
 import ru.ladamarket.database.services.carServices.transmission.TransmissionServiceImpl
 import ru.ladamarket.models.carModels.Equipment
 
-class EquipmentServiceImpl(database: Database): EquipmentService {
+class EquipmentServiceImpl(database: Database) : EquipmentService {
 
-    object EquipmentTable:IntIdTable("equipment") {
-        val equipmentName = varchar("name",30)
+    object EquipmentTable : IntIdTable("equipment") {
+        val equipmentName = varchar("name", 30)
         val modelId = reference("model_id", CarModelServiceImpl.CarModelTable)
         val bodyId = reference("body_id", BodyServiceImpl.BodyTable)
         val transmissionId = reference("transmission_id", TransmissionServiceImpl.TransmissionTable)
@@ -288,10 +289,11 @@ class EquipmentServiceImpl(database: Database): EquipmentService {
     private suspend fun <T> dbQuery(block: suspend () -> T) = newSuspendedTransaction(Dispatchers.IO) {
         block()
     }
+
     override suspend fun read(id: Int): Equipment? {
         return dbQuery {
             EquipmentTable
-                .select(where = {EquipmentTable.id eq id})
+                .select(where = { EquipmentTable.id eq id })
                 .singleOrNull()
                 ?.let { ResultRowToEquipment(it) }
         }
@@ -315,10 +317,53 @@ class EquipmentServiceImpl(database: Database): EquipmentService {
         }
     }
 
+    override suspend fun readAllTransmissionsByData(modelId: Int, bodyId: Int): List<Int> {
+        return dbQuery {
+            EquipmentTable
+                .slice(EquipmentTable.transmissionId)
+                .select { (EquipmentTable.modelId eq modelId) and
+                        (EquipmentTable.bodyId eq bodyId) }
+                .groupBy(EquipmentTable.transmissionId)
+                .map { it[EquipmentTable.transmissionId].value }
+        }
+    }
+
+    override suspend fun readAllEnginesByData(modelId: Int, bodyId: Int, transmissionId: Int): List<Short> {
+        return dbQuery {
+            EquipmentTable
+                .slice(EquipmentTable.engineId)
+                .select {
+                    (EquipmentTable.modelId eq modelId) and
+                            (EquipmentTable.bodyId eq bodyId) and
+                            (EquipmentTable.transmissionId eq transmissionId)
+                }
+                .groupBy(EquipmentTable.engineId)
+                .map { it[EquipmentTable.engineId] }
+        }
+    }
+
+    override suspend fun readAllEquipmentsByData(
+        modelId: Int,
+        bodyId: Int,
+        transmissionId: Int,
+        engineId: Short
+    ): List<Equipment> {
+        return dbQuery {
+            EquipmentTable
+                .select {
+                    (EquipmentTable.modelId eq modelId) and
+                            (EquipmentTable.bodyId eq bodyId) and
+                            (EquipmentTable.transmissionId eq transmissionId) and
+                            (EquipmentTable.engineId eq engineId)
+                }
+                .map { ResultRowToEquipment(it) }
+        }
+    }
+
     override suspend fun isEquipmentExists(id: Int): Boolean {
         return dbQuery {
             EquipmentTable
-                .select(where = {EquipmentTable.id eq id})
+                .select(where = { EquipmentTable.id eq id })
                 .count() > 0
         }
     }

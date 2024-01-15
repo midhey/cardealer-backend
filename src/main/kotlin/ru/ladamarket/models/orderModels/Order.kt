@@ -1,10 +1,12 @@
 package ru.ladamarket.models.orderModels
 
+import java.time.LocalDate
+
 data class Order(
-    val modelId: Short,
-    val colorId: Short,
+    val orderId: Int,
+    val equipmentId: Int,
+    val colorId: Int,
     val userId: Int,
     val status: String,
-    val totalCost: Float,
-    val orderTime: String
+    val orderTime: LocalDate
 )

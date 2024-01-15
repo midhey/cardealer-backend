@@ -33,5 +33,20 @@ fun Route.equipment(
             bodyService,
             equipmentService
         )
+        getAllTransmissionsByData(
+            transmissionService,
+            equipmentService
+        )
+        getAllEnginesByData(
+            engineService,
+            equipmentService
+        )
+        getAllEquipmentsByData(
+            modelService,
+            bodyService,
+            transmissionService,
+            engineService,
+            equipmentService
+        )
     }
 }
