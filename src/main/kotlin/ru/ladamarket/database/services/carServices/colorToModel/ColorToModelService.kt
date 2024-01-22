@@ -4,5 +4,5 @@ import ru.ladamarket.models.carModels.ColorToModel
 
 interface ColorToModelService {
     suspend fun read(id: Int): ColorToModel?
-    suspend fun readAllByModel(id: Int): List<Short>
+    suspend fun readAllByModel(id: Int): Map<Int, Short>
 }

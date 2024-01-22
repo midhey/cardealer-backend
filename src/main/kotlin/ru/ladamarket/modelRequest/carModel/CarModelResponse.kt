@@ -8,5 +8,6 @@ data class CarModelResponse(
     val modelName: String,
     val generation: String,
     val country: String,
-    val wheel: String
+    val wheel: String,
+    val cost: Int
 )

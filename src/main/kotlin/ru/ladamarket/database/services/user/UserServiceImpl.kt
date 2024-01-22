@@ -21,7 +21,7 @@ import ru.ladamarket.models.user.User
 import ru.ladamarket.models.user.UserDTO
 import ru.ladamarket.security.hash.SaltedHash
 
-class UserServiceImpl(database: Database):UserService {
+class UserServiceImpl(database: Database) : UserService {
     object UserTable : IntIdTable("users") {
         val surname = UserTable.varchar("surname", 40)
         val name = UserTable.varchar("name", 40)
@@ -56,6 +56,7 @@ class UserServiceImpl(database: Database):UserService {
     private suspend fun <T> dbQuery(block: suspend () -> T) = newSuspendedTransaction(Dispatchers.IO) {
         block()
     }
+
     override suspend fun create(request: RegisterRequest, saltedHash: SaltedHash) {
         dbQuery {
             UserTable.insert {
@@ -74,7 +75,7 @@ class UserServiceImpl(database: Database):UserService {
 
     override suspend fun read(id: Int): User? {
         return dbQuery {
-            UserTable.select { UserTable.id eq id }.singleOrNull()?.let {resultRowToUser(it)}
+            UserTable.select { UserTable.id eq id }.singleOrNull()?.let { resultRowToUser(it) }
         }
     }
 
@@ -90,7 +91,7 @@ class UserServiceImpl(database: Database):UserService {
         }
     }
 
-    override suspend fun readIdByEmail(email: String):Int? {
+    override suspend fun readIdByEmail(email: String): Int? {
         return dbQuery {
             UserTable.select { UserTable.email eq email }
                 .singleOrNull()
@@ -104,6 +105,20 @@ class UserServiceImpl(database: Database):UserService {
         }
     }
 
+    override suspend fun readFullName(id: Int): String? {
+        return dbQuery {
+            val user = UserTable
+                .slice(UserTable.surname, UserTable.name)
+                .select { UserTable.id eq id }
+                .singleOrNull()
+
+            user?.let {
+                val fullName = "${it[UserTable.surname]} ${it[UserTable.name]}"
+                fullName
+            }
+        }
+    }
+
     override suspend fun isEmailExist(email: String): Boolean {
         return dbQuery {
             UserTable.select { UserTable.email eq email }.count() > 0
@@ -111,7 +126,7 @@ class UserServiceImpl(database: Database):UserService {
     }
 
 
-    override suspend fun isPhoneExist(phone: String):Boolean {
+    override suspend fun isPhoneExist(phone: String): Boolean {
         return dbQuery {
             UserTable.select { UserTable.phone eq phone }.count() > 0
         }
@@ -119,22 +134,22 @@ class UserServiceImpl(database: Database):UserService {
 
     override suspend fun isAdmin(id: Int): Boolean {
         return dbQuery {
-            val user = UserTable.select { UserTable.id eq id}.singleOrNull()?.let { resultRowToUser(it) }
+            val user = UserTable.select { UserTable.id eq id }.singleOrNull()?.let { resultRowToUser(it) }
             user?.role!!.toLowerCasePreservingASCIIRules() == "admin"
         }
     }
 
     override suspend fun isManager(id: Int): Boolean {
         return dbQuery {
-            val user = UserTable.select { UserTable.id eq id}.singleOrNull()?.let { resultRowToUser(it) }
+            val user = UserTable.select { UserTable.id eq id }.singleOrNull()?.let { resultRowToUser(it) }
             user?.role!!.toLowerCasePreservingASCIIRules() == "manager"
         }
     }
 
     override suspend fun update(id: Int, request: UserInfoUpdate, saltedHash: SaltedHash) {
         dbQuery {
-            if (UserTable.select(where = {UserTable.id eq id})!=null) {
-                UserTable.update(where = {UserTable.id eq id}) {
+            if (UserTable.select(where = { UserTable.id eq id }) != null) {
+                UserTable.update(where = { UserTable.id eq id }) {
                     if (!request.surname.isNullOrBlank()) it[surname] = request.surname
                     if (!request.name.isNullOrBlank()) it[name] = request.name
                     if (!request.patronymic.isNullOrBlank()) it[patronymic] = request.patronymic

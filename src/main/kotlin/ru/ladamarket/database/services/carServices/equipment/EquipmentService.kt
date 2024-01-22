@@ -10,4 +10,5 @@ interface EquipmentService {
     suspend fun readAllEnginesByData(modelId: Int, bodyId: Int, transmissionId: Int): List<Short>
     suspend fun readAllEquipmentsByData(modelId: Int, bodyId: Int, transmissionId: Int, engineId: Short): List<Equipment>
     suspend fun isEquipmentExists(id: Int): Boolean
+    suspend fun minCostForModel(id: Int): Double?
 }

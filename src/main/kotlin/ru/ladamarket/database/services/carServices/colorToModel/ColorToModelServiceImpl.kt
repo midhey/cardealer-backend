@@ -8,7 +8,6 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import ru.ladamarket.database.services.carServices.carModel.CarModelServiceImpl
 import ru.ladamarket.database.services.carServices.colorToModel.ColorToModelServiceImpl.ColorToModelTable.colorCode
 import ru.ladamarket.database.services.carServices.colorToModel.ColorToModelServiceImpl.ColorToModelTable.modelId
-import ru.ladamarket.database.services.carServices.equipment.EquipmentServiceImpl
 import ru.ladamarket.database.services.color.ColorServiceImpl
 import ru.ladamarket.models.carModels.ColorToModel
 
@@ -74,20 +73,21 @@ class ColorToModelServiceImpl(database: Database): ColorToModelService {
     override suspend fun read(id: Int): ColorToModel? {
         return dbQuery {
             ColorToModelTable
-                .select(where = {ColorToModelTable.modelId eq id})
+                .select(where = {ColorToModelTable.id eq id})
                 .singleOrNull()
                 ?.let { ResultRowToColorToModel(it) }
         }
     }
 
-    override suspend fun readAllByModel(id: Int): List<Short> {
+    override suspend fun readAllByModel(id: Int): Map<Int, Short> {
         return dbQuery {
             ColorToModelTable
-                .slice(ColorToModelTable.colorCode)
-                .select(where = {ColorToModelTable.modelId eq id})
-                .map { it[ColorToModelTable.colorCode] }
+                .slice(ColorToModelTable.id, ColorToModelTable.colorCode)
+                .select { ColorToModelTable.modelId eq id }
+                .associate { it[ColorToModelTable.id].value to it[ColorToModelTable.colorCode] }
         }
     }
+
 
     private fun ResultRowToColorToModel(row: ResultRow) = ColorToModel(
         colorId = row[ColorToModelTable.id].value,

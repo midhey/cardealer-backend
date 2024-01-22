@@ -6,10 +6,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import ru.ladamarket.database.services.carServices.colorToModel.ColorToModelService
 import ru.ladamarket.database.services.color.ColorService
-import ru.ladamarket.modelRequest.body.BodyResponse
-import ru.ladamarket.modelRequest.color.ColorResponse
 import ru.ladamarket.modelRequest.colorToModel.ColorToModelResponse
-import ru.ladamarket.models.carModels.ColorToModel
 
 fun Route.colorToModel(
     colorToModelService: ColorToModelService,
@@ -21,12 +18,13 @@ fun Route.colorToModel(
             if (modelId!=null) {
                 val colors = colorToModelService.readAllByModel(modelId)
                 if (colors.isNotEmpty()) {
-                    val colorResponses = colors.map { color ->
-                        val colorInfo = colorService.read(color)
-                        if (colorInfo!=null)  {
-                            ColorResponse(
-                                colorName = colorInfo.colorName,
+                    val colorResponses = colors.map { colorEntry ->
+                        val colorInfo = colorService.read(colorEntry.value)
+                        if (colorInfo != null) {
+                            ColorToModelResponse(
+                                colorId = colorEntry.key,
                                 colorCode = colorInfo.colorCode,
+                                colorName = colorInfo.colorName,
                                 colorHex = colorInfo.colorHex
                             )
                         } else {
@@ -43,6 +41,7 @@ fun Route.colorToModel(
                         HttpStatusCode.Conflict
                     )
                 }
+
 
             } else {
                 call.respond(

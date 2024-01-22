@@ -21,7 +21,7 @@ fun Route.signIn(
     post("/signin") {
         val request = call.receive<AuthRequest>()
 
-        val user = if (request.phone.equals(null)) userService.readByEmail(request.email) else userService.readByPhone(request.phone)
+        val user = if (request.phone == "") userService.readByEmail(request.email) else userService.readByPhone(request.phone)
 
         if (user == null) {
             call.respond(HttpStatusCode.Conflict, "Incorrect email or phone")

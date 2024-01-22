@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ColorToModelResponse(
     val colorId: Int,
-    val modelId: Int,
-    val colorCode: Short
+    val colorCode: Short,
+    val colorName: String,
+    val colorHex: String
 )

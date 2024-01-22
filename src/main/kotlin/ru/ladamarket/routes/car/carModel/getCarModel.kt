@@ -5,16 +5,20 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import ru.ladamarket.database.services.carServices.carModel.CarModelService
+import ru.ladamarket.database.services.carServices.equipment.EquipmentService
 import ru.ladamarket.modelRequest.carModel.CarModelResponse
 
 fun Route.getCarModel(
-    carModelService: CarModelService
+    carModelService: CarModelService,
+    equipmentService: EquipmentService
 ) {
     get("/read/{id}") {
-        val id = call.parameters["id"]?.toInt()
-        if (carModelService.isModelExists(id!!)) {
+        val id = call.parameters["id"]?.toIntOrNull()
+        if (id != null) {
             val carModel = carModelService.read(id)
-            if (carModel != null) {
+            val carModelCost = equipmentService.minCostForModel(carModel!!.modelId)!!.toInt()
+
+            if (carModel != null && carModelCost != null) {
                 call.respond(
                     HttpStatusCode.OK,
                     CarModelResponse(
@@ -22,25 +26,15 @@ fun Route.getCarModel(
                         modelName = carModel.modelName,
                         generation = carModel.generation,
                         country = carModel.country,
-                        wheel = carModel.wheel
+                        wheel = carModel.wheel,
+                        cost = carModelCost
                     )
                 )
-                return@get
             } else {
-                call.respond(
-                    HttpStatusCode.NoContent,
-                    message = "No models with this id"
-                )
-                return@get
+                call.respond(HttpStatusCode.NoContent, "No models with this or cost is null")
             }
-
-        }
-        else {
-            call.respond(
-                HttpStatusCode.NoContent,
-                message = "No models with this id"
-            )
-            return@get
+        } else {
+            call.respond(HttpStatusCode.BadRequest, "Invalid id parameter")
         }
     }
 }

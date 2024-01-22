@@ -12,6 +12,7 @@ import ru.ladamarket.database.services.carServices.engine.EngineService
 import ru.ladamarket.database.services.carServices.equipment.EquipmentService
 import ru.ladamarket.database.services.carServices.transmission.TransmissionService
 import ru.ladamarket.database.services.color.ColorService
+import ru.ladamarket.database.services.news.NewsService
 import ru.ladamarket.database.services.order.OrderService
 import ru.ladamarket.database.services.user.UserService
 import ru.ladamarket.routes.admin.admin
@@ -24,6 +25,7 @@ import ru.ladamarket.routes.car.engine.engine
 import ru.ladamarket.routes.car.equipment.equipment
 import ru.ladamarket.routes.car.transmission.transmission
 import ru.ladamarket.routes.color.color
+import ru.ladamarket.routes.news.news
 import ru.ladamarket.routes.order.order
 import ru.ladamarket.routes.user.profile
 import ru.ladamarket.security.hash.HashingService
@@ -43,6 +45,7 @@ fun Application.configureRouting(config: TokenConfig) {
     val equipmentService: EquipmentService by inject()
     val colorToModelService: ColorToModelService by inject()
     val orderService: OrderService by inject()
+    val newsService: NewsService by inject()
 
     routing {
         auth(userService, tokenService, hashingService, config)
@@ -51,7 +54,7 @@ fun Application.configureRouting(config: TokenConfig) {
         admin(userService)
         color(colorService, userService)
         engine(engineService)
-        carModel(carModelService)
+        carModel(carModelService, equipmentService)
         transmission(transmissionService)
         body(bodyService)
         equipment(
@@ -76,6 +79,7 @@ fun Application.configureRouting(config: TokenConfig) {
             colorToModelService,
             colorService
         )
+        news(newsService, userService)
     }
 }
 

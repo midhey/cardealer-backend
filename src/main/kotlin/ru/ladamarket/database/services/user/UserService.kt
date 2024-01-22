@@ -12,6 +12,7 @@ interface UserService {
     suspend fun readByEmail(email: String): User?
     suspend fun readIdByEmail(email: String): Int?
     suspend fun readByPhone(phone: String): User?
+    suspend fun readFullName(id: Int): String?
     suspend fun isEmailExist(email: String):Boolean
     suspend fun isPhoneExist(phone: String):Boolean
     suspend fun isAdmin(id: Int): Boolean

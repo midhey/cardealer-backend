@@ -7,7 +7,6 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import org.jetbrains.exposed.sql.transactions.transaction
 import ru.ladamarket.database.services.carServices.body.BodyServiceImpl
 import ru.ladamarket.database.services.carServices.carModel.CarModelServiceImpl
-import ru.ladamarket.database.services.carServices.colorToModel.ColorToModelServiceImpl.ColorToModelTable.uniqueIndex
 import ru.ladamarket.database.services.carServices.engine.EngineServiceImpl
 import ru.ladamarket.database.services.carServices.equipment.EquipmentServiceImpl.EquipmentTable.bodyId
 import ru.ladamarket.database.services.carServices.equipment.EquipmentServiceImpl.EquipmentTable.cost
@@ -365,6 +364,17 @@ class EquipmentServiceImpl(database: Database) : EquipmentService {
             EquipmentTable
                 .select(where = { EquipmentTable.id eq id })
                 .count() > 0
+        }
+    }
+
+    override suspend fun minCostForModel(id: Int): Double? {
+        return dbQuery {
+            EquipmentTable
+                .slice(EquipmentTable.cost.min())
+                .select { EquipmentTable.modelId eq id }
+                .singleOrNull()
+                ?.get(EquipmentTable.cost.min())
+                ?.toDouble()
         }
     }
 
